@@ -10,7 +10,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Base64;
 
 
 @Service
@@ -28,17 +27,16 @@ public class CertificateService {
 
         var csr = new CertificateSignRequest(certificate, deviceId);
         var request = new HttpEntity<>(csr, headers);
-        return restTemplate.postForObject( "https://api-server.joumer.com:9090/auth/certificate-sign", request, String.class);
+        return restTemplate.postForObject( "https://8.213.44.105:8083/ssl/sign-certificate", request, String.class);
     }
 
     public String getSignedCertificate(String deviceId) throws Exception {
         var keyPairs = CSRGenerator.generateRSAKeyPair();
         var csr = CSRGenerator.generateCSR(deviceId, keyPairs);
         var csrStr = CSRGenerator.parseCSR(csr);
+        CSRGenerator.writePrivateKeyToPem(keyPairs.getPrivate(), "/Users/mustafa/Desktop/client_certificate/client.key");
         var signedCertificate = signCertificate(csrStr, deviceId);
-        writeData(signedCertificate, "/Users/mustafa/test/mtls-client/work/certs/client.crt");
-        CSRGenerator.writePrivateKeyToPem(keyPairs.getPrivate(), "/Users/mustafa/test/mtls-client/work/certs/client.key");
-
+        writeData(signedCertificate, "/Users/mustafa/Desktop/client_certificate/client.crt");
         return signedCertificate;
     }
 
@@ -53,4 +51,5 @@ public class CertificateService {
             e.printStackTrace();
         }
     }
+
 }

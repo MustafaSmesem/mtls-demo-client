@@ -13,7 +13,7 @@ public class RestTemplateConfig {
     @Bean
     public RestTemplate defaultSslRestTemplate(RestTemplateBuilder builder, SslBundles sslBundles) {
         var sslBundle = sslBundles.getBundle("default");
-        return builder.rootUri("https://api-server.joumer.com:9090").setSslBundle(sslBundle).build();
+        return builder.rootUri("https://8.213.44.105:8083").setSslBundle(sslBundle).build();
     }
 
     @Bean
