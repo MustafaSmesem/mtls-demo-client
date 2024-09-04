@@ -1,6 +1,8 @@
 package com.joumer.mtlsclient.controller;
 
 import com.joumer.mtlsclient.client.CertificateService;
+import com.joumer.mtlsclient.model.CertificateSignResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,7 +20,7 @@ public class AuthController {
 
 
     @GetMapping("get-certificate")
-    public String getCertificate(@RequestParam String deviceId) throws Exception {
-        return certificateService.getSignedCertificate(deviceId);
+    public ResponseEntity<CertificateSignResponse> getCertificate(@RequestParam String deviceId) throws Exception {
+        return ResponseEntity.ok(certificateService.getSignedCertificate(deviceId));
     }
 }

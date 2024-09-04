@@ -2,6 +2,7 @@ package com.joumer.mtlsclient.client;
 
 
 import com.joumer.mtlsclient.model.CertificateSignRequest;
+import com.joumer.mtlsclient.model.CertificateSignResponse;
 import com.joumer.mtlsclient.utils.CSRGenerator;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,22 +22,22 @@ public class CertificateService {
         this.restTemplate = defaultSslRestTemplate;
     }
 
-    private String signCertificate(String certificate, String deviceId) {
+    private CertificateSignResponse signCertificate(String certificate, String deviceId) {
         var headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
 
         var csr = new CertificateSignRequest(certificate, deviceId);
         var request = new HttpEntity<>(csr, headers);
-        return restTemplate.postForObject( "https://8.213.44.105:8083/ssl/sign-certificate", request, String.class);
+        return restTemplate.postForObject( "https://mpocssl.edfapay.com:8083/ssl/sign-certificate", request, CertificateSignResponse.class);
     }
 
-    public String getSignedCertificate(String deviceId) throws Exception {
+    public CertificateSignResponse getSignedCertificate(String deviceId) throws Exception {
         var keyPairs = CSRGenerator.generateRSAKeyPair();
         var csr = CSRGenerator.generateCSR(deviceId, keyPairs);
         var csrStr = CSRGenerator.parseCSR(csr);
         CSRGenerator.writePrivateKeyToPem(keyPairs.getPrivate(), "/Users/mustafa/Desktop/client_certificate/client.key");
         var signedCertificate = signCertificate(csrStr, deviceId);
-        writeData(signedCertificate, "/Users/mustafa/Desktop/client_certificate/client.crt");
+        writeData(signedCertificate.data(), "/Users/mustafa/Desktop/client_certificate/client.crt");
         return signedCertificate;
     }
 

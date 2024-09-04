@@ -10,14 +10,14 @@ spring:
         default:
           keystore:
             certificate: "/Users/mustafa/test/mtls-client/work/certs/client-default.crt"
-            private-key: "/Users/mustafa/test/mtls-client/work/certs/client-default.key"
-            private-key-password: "12345678"
+            private-key: "/Users/mustafa/test/mtls-client/work/certs/client-default-d.key"
+            private-key-password: 12345678
           truststore:
-            certificate: "/Users/mustafa/test/mtls-client/work/certs/rootCA-default.crt"
+            certificate: "/Users/mustafa/test/mtls-client/work/certs/server.crt"
         rest:
           keystore:
             certificate: "/Users/mustafa/test/mtls-client/work/certs/client.crt"
             private-key: "/Users/mustafa/test/mtls-client/work/certs/client.key"
-            private-key-password: "12345678"
+            private-key-password: 12345678
           truststore:
             certificate: "/Users/mustafa/test/mtls-client/work/certs/rootCA-default.crt"
